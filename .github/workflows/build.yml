@@ -17,22 +17,4 @@ jobs:
           unzip -q "$ZIP" -d proj
           G=$(find proj -maxdepth 3 -name settings.gradle.kts | head -n1)
           [ -n "$G" ] || { echo "settings.gradle.kts not found"; exit 1; }
-          echo "PROJ=$(dirname "$(realpath "$G")")" >> "$GITHUB_ENV"
-
-      - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: 17 }
-
-      - name: Accept Android licenses
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
-
-      - uses: gradle/actions/setup-gradle@v3
-        with: { gradle-version: "8.7" }
-
-      - name: Build release APK
-        working-directory: ${{ env.PROJ }}
-        run: gradle :app:assembleRelease --no-daemon
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: PortYouStudio-apk
-          path: ${{ env.PROJ }}/app/build/outputs/apk/release/*.apk
+          echo "PROJ=$(dirname "$(realpath "$G")")" >>
